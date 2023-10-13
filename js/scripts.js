@@ -10,10 +10,10 @@
 
 async function getUsers(url) {
  //try{
-    //const response = await fetch("https://randomuser.me/api")
+    //const response = await fetch("https://randomuser.me/api/")
     fetch(url)
     .then(response => response.json())
-    .then(data=> console.log(data));
+    .then(response => console.log(response.results));
 
 //     if (!response.ok) throw new Error("Something went wrong");
 
@@ -24,4 +24,4 @@ async function getUsers(url) {
 //}
 }
 
-getUsers("https://randomuser.me/api");
+getUsers('https://randomuser.me/api/?results=12');
