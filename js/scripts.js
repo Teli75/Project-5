@@ -20,7 +20,6 @@ async function getUsers(url) {
 }
 }
 
-
 function generateCard(data) {
     console.log(data);
  const html = `
@@ -38,3 +37,21 @@ outerCardDiv.insertAdjacentHTML("beforeend", html);
 }
 
 getUsers("https://randomuser.me/api/?results=12");
+
+//======================================================================
+const container = document.querySelector('gallery');
+
+container.addEventListener('click', (event) => {
+    //Select the employee that was clicked
+    const employeeCard = event.target.closest('.card');
+    if(!employeeCard) return;
+
+    const employee = employeeCard.document.querySelector('h3 #name');
+    const employeeName = employee.textContent;
+
+    console.log(employeeName);
+    
+});
+
+
+
