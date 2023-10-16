@@ -39,15 +39,15 @@ outerCardDiv.insertAdjacentHTML("beforeend", html);
 getUsers("https://randomuser.me/api/?results=12");
 
 //======================================================================
-const container = document.querySelector('gallery');
+const container = document.querySelector('.gallery');
 
 container.addEventListener('click', (event) => {
     //Select the employee that was clicked
     const employeeCard = event.target.closest('.card');
     if(!employeeCard) return;
 
-    const employee = employeeCard.document.querySelector('h3 #name');
-    const employeeName = employee.textContent;
+    
+    const employeeName = container.document.querySelector('.card-info-container .card-name')
 
     console.log(employeeName);
     
