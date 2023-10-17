@@ -62,17 +62,31 @@ container.addEventListener("click", (event) => {
   displayEmployeesModal(employee);
 });
 
+function formatDate(employee){
+  const employeeDOBJSON = employee.dob.date.toString();
+  const employeeDOB = new Date(employeeDOBJSON);
+  return formattedDate = `${
+    employeeDOB.getMonth() + 1
+  }\/${employeeDOB.getDate()}\/${employeeDOB.getFullYear()}`;
+}
+function formatNumber(employee){
+  console.log('entering formatNumber');
+   // const employeePhoneNumber = employee.phone.split('');
+    //if (employeePhoneNumber.map(number => {if (typeof(number) === 'number'
+   const excludeNumbers = employee.phone.replace(/\D/g, '');
+   const formmattedPhoneNumber = excludeNumbers.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3');
+   return formmattedPhoneNumber
+}
+
+
 /**
  * Provides innerHTML for the modal div
  * @param {json object} employee = json object
  */
 function displayEmployeesModal(employee) {
   //Used date method to format date
-  const employeeDOBJSON = employee.dob.date.toString();
-  const employeeDOB = new Date(employeeDOBJSON);
-  const formattedDate = `${
-    employeeDOB.getMonth() + 1
-  }\/${employeeDOB.getDate()}\/${employeeDOB.getFullYear()}`;
+ 
+
 
   const modalHTML = `
     <div class="modal-container">
@@ -84,9 +98,9 @@ function displayEmployeesModal(employee) {
             <p class="modal-text">${employee.email}</p>
             <p class="modal-text cap">${employee.location.city}</p>
             <hr>
-            <p class="modal-text">${employee.phone}</p>
+            <p class="modal-text">${formatNumber(employee)}</p>
             <p class="modal-text">${employee.location.street.number}, ${employee.location.street.name}, ${employee.location.city}, ${employee.location.state} ${employee.location.postcode}</p>
-            <p class="modal-text">Birthday: ${formattedDate} </p>
+            <p class="modal-text">Birthday: ${formatDate(employee)} </p>
             
         </div>
     </div>`;
