@@ -1,17 +1,11 @@
-//Get and display 12 random users
-//With the information provided from The Random User Generator API, send a single request to the API, and use the response data
-//to display 12 users, along with some basic information for each:
-//Image
-//First and Last Name
-//Email
-//City or location
-//Refer to the mockups and the comments in the index.html file for an example of what info should be displayed on the page and
-// how it should be styled.
 let employees = [];
-const modalContainer = document.querySelector('.modal-container');
+const body = document.querySelector("body");
 const outerCardDiv = document.querySelector(".gallery");
-//let employees;
 
+/**
+ * Fetches data from api
+ * @param {api} url
+ */
 async function getUsers(url) {
   try {
     fetch(url);
@@ -26,6 +20,10 @@ async function getUsers(url) {
   }
 }
 
+/**
+ * Generates employee info on card div
+ * @param {json object} data
+ */
 function generateCard(data) {
   console.log(data);
   const html = `
@@ -47,6 +45,7 @@ getUsers("https://randomuser.me/api/?results=12");
 //======================================================================
 const container = document.querySelector(".gallery");
 
+//Displays modal when card is selected
 container.addEventListener("click", (event) => {
   //Select the employee that was clicked
   const employeeCard = event.target.closest(".card");
@@ -56,20 +55,26 @@ container.addEventListener("click", (event) => {
     ".card-info-container .card-name"
   ).textContent;
 
-  console.log(employeeNameElement);
-
   const employee = employees.find(
     (employee) =>
       `${employee.name.first} ${employee.name.last}` === employeeNameElement
   );
-
   displayEmployeesModal(employee);
-
 });
 
-  function displayEmployeesModal(employee){
-    console.log(employee);
-    const modalHTML =`
+/**
+ * Provides innerHTML for the modal div
+ * @param {json object} employee = json object
+ */
+function displayEmployeesModal(employee) {
+  //Used date method to format date
+  const employeeDOBJSON = employee.dob.date.toString();
+  const employeeDOB = new Date(employeeDOBJSON);
+  const formattedDate = `${
+    employeeDOB.getMonth() + 1
+  }\/${employeeDOB.getDate()}\/${employeeDOB.getFullYear()}`;
+
+  const modalHTML = `
     <div class="modal-container">
     <div class="modal">
         <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
@@ -79,12 +84,22 @@ container.addEventListener("click", (event) => {
             <p class="modal-text">${employee.email}</p>
             <p class="modal-text cap">${employee.location.city}</p>
             <hr>
-            <p class="modal-text">(555) 555-5555</p>
-            <p class="modal-text">123 Portland Ave., Portland, OR 97204</p>
-            <p class="modal-text">Birthday: 10/21/2015</p>
+            <p class="modal-text">${employee.phone}</p>
+            <p class="modal-text">${employee.location.street.number}, ${employee.location.street.name}, ${employee.location.city}, ${employee.location.state} ${employee.location.postcode}</p>
+            <p class="modal-text">Birthday: ${formattedDate} </p>
+            
         </div>
     </div>`;
-    modalContainer.insertAdjacentHTML( "beforeend", modalHTML);
-    
-  }
+  //<p class="modal-text">123 Portland Ave., Portland, OR 97204</p>
+  body.insertAdjacentHTML("beforeend", modalHTML);
 
+  const modalButton = document.querySelector("#modal-close-btn");
+
+  //Removes created modal when close button is clicked
+  modalButton.addEventListener("click", (event) => {
+    console.log(event.target);
+    console.log("this button is being clicked");
+    const modalContainer = document.querySelector(".modal-container");
+    modalContainer.remove();
+  });
+}
